@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,16 +40,14 @@ public class OrderRobotController {
 
 	@RequestMapping(value = "/showMenus", method = RequestMethod.GET)
 	public List<Menu> showMenus() {
-		//List<Menu> menus = menuRepository.findAll();
-		//return menus;
-		return null;
+		List<Menu> menus = menuRepository.findAll();
+		return menus;
 	}
 
 	@RequestMapping(value = "/showHistroy/{customerId}", method = RequestMethod.GET)
-	public OrderHistory getHistory(@PathVariable(value = "customerId") String customerId) {
-		//OrderHistory orderHistory = orderHistoryRepository.findByCustomerId(customerId);
-		//return orderHistory;
-		return null;
+	public List<OrderHistory> getHistory(@PathVariable(value = "customerId") String customerId) {
+		List<OrderHistory> orderHistory = orderHistoryRepository.findByCustomerId(customerId);
+		return orderHistory;
 	}
 
 	@RequestMapping(value = "/order/{customerId}", method = RequestMethod.POST)
@@ -59,7 +59,7 @@ public class OrderRobotController {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		order.setDate(dateFormat.format(now));
 		order.setCourses(courses);
-		//this.orderRepository.save(order);
+		this.orderRepository.save(order);
 		return null;
 	}
 }
